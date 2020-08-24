@@ -783,3 +783,14 @@ scp    -r    要复制的文件的路径      别人的用户名@别人的ip地�
 > sftp   ip地址
 > get   文件名
 > put   文件名
+
+## 15 windows远程连接桌面步骤
+
+1 进入服务，启用Remote Desktop  三个
+
+2 重启防火墙，windows firewall
+
+3 电脑属性设置远程允许连接
+
+4 mstsc -v  ip
+
