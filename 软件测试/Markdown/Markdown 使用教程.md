@@ -287,3 +287,21 @@ Markdown 制作表格使用 **|** 来分隔不同的单元格，使用 **-** 来
 
 ## 9.高级技巧
 
+### 9.1 mermain  ----    流程图，时序图，脑图
+
+```mermaid
+graph LR
+	登录--> 1.输入验
+	A-->撇,估计,均值,向量等写于符号上下的标记
+	KaTex--> 分隔符_Delimiters
+	分隔符_Delimiters-->小中大括号,竖杠,绝对值等分隔符的反斜杠写法
+	KaTex--> 公式组_Enviroments
+	公式组_Enviroments-->B(.....)
+	KaTex-->C(...)
+```
+
+还有 sequence
+
+### 9.2  脑图   markmap  
+
+命令：npx  markmap-lib  文件名.md

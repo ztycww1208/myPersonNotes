@@ -89,6 +89,12 @@
 > > 码:123456---Enter键----出现mysql> 表示ok
 > >
 > > 2.退出:exit
+>
+> window安装mysql之后无法远程连接的 报1130错误
+>
+> 解决方法：在服务器命令行输入
+>
+> GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
 
 ## 3 用户的操作
 
@@ -168,6 +174,8 @@ drop   user   '用户名'@'ip地址';
 
 4.可以在navicate上远程登录
 
+> mysql  -uroot  -p123456  -h192.168.0.153  远程连接其他ip的数据库
+
 
 
 ## 4 常见的数据类型和约束
@@ -189,6 +197,13 @@ drop   user   '用户名'@'ip地址';
 **日期时间（datetime）**：如2020-04-02 15:04:05
 
 **日期（date）**：如2020-04-02
+
+
+
+> 对于INT型，MySQL支持指定显示宽度
+> 例如：
+> int(5)：表示如果数值宽度小于5位，则填满宽度，保证总宽度为5位。
+> 默认为int(11)，配合zerofill可以看到效果。
 
 ### 4.2 常用的约束
 
@@ -282,21 +297,12 @@ truncate 和 delete的区别:
 
 ### 6.1 增
 
-6.1.1 全量插入
-
 ```mysql
+#全量插入
 insert   into  表名   values(值1,值2...);
-```
-
-6.1.2 部分插入
-
-```mysql
+#部分插入
 insert   into   表名(字段1, 字段2...)   values(值1, 值2...);
-```
-
-6.1.3 批量插入
-
-```mysql
+#批量插入
 insert   into   表名   values (),(),()...;
 ```
 
@@ -444,57 +450,28 @@ select   *   from   student   order by   studentid   asc;
 
 2 查询系统时间：select now();
 
-3 查找具体时间点：
-
 ```mysql
+-- 3 查找具体时间点：--
 select   *   from   student   where   birthday ='2013-11-06 10:31:57';
-```
-
-4 按年份查找:
-
-```mysql
+--  4 按年份查找:--
 select  *   from   student   where   year(birthday)='2013';
-```
-
-5 按月份查找:
-
-```mysql
+-- 5 按月份查找: --
 select * from student  where month(birthday)='2';
-```
+-- 6 按日期查找: --
+select * from  student where day(birthday)='12' ;
 
-6 按日期查找:
-
-```mysql
-select * from student where day(birthday)='12' ;
-```
-
-```mysql
-select * from student where dayofmonth(birthday)='12' ;
+select * from  student where dayofmonth(birthday)='12' ;
 ```
 
 7 组合查找:
 
 ```mysql
 DATE_FORMAT(日期的列,'日期格式') -- %Y-%m-%d %H:%i:%s
+-- 按 年 + 月 组合查找:--
+select * from student where date_format(birthday,'%Y-%m')='2014-05';
+-- 按 年 + 月 + 日 + 时 + 分 + 秒 进行查找:--
+select * from student where date_format(birthday,'%Y-%m-%d %H:%i:%s')='2013-07-14 10:31:57'; -- %Y-%m-%d
 ```
-
-- 按 年 + 月 组合查找:
-
-- ```mysql
-  select * from student where date_format(birthday,'%Y-%m')='2014-05';
-  ```
-
-- 按 年 + 月 + 日 + 时 + 分 + 秒 进行查找:
-
-- ```mysql
-  select * from student where date_format(birthday,'%Y-%m-%d %H:%i:%s')='2013-07-14 10:31:57'; -- %Y-%m-%d
-  ```
-
-
-
-
-
-
 
 #### 6.4.11 聚合函数
 
@@ -503,37 +480,22 @@ MySQL预设的一些函数，可以快速实现「数据统计」
 1  count		计算总行数
 
 ```mysql
+-- 1  count		计算总行数 --
 select count(*) as 学生总数 from student;
-```
 
-2  max		统计最大值
-
-```mysql
+-- 2  max		统计最大值--
 select max(studentid) from student;
-```
 
-3  min		统计最小值
-
-```mysql
+-- 3  min		统计最小值--
 select min(studentid) from student;
-```
 
-4  sum		求此列的和
-
-```mysql
+-- 4  sum		求此列的和 --
 select sum(studentid) from student;
-```
 
-5  avg		求此列平均值
-
-```mysql
+-- 5  avg		求此列平均值 --
 select avg(studentid) from student where sex='女'; 
 select round(avg(studentid),2) from student where sex='女'; --保留两位学号
 ```
-
-
-
-
 
 #### 6.4.12 多表查询
 
@@ -626,6 +588,8 @@ order by   列   asc /desc;
 - 子查询一般充当数据源
 - 子查询是可以独立存在，是一条完整的查询语句
 
+`注意`：子查询中表不能和外层表相同，只有查询不报错，不建议
+
 2 标量子查询（判断语句和返回一个数据）
 
 ```mysql
@@ -659,10 +623,6 @@ select score from score where courseid in (1);
 -- 组合成子查询（列子查询）
 select score from score where courseid in (select courseid from course where coname in ("Linux"));
 ```
-
-
-
-
 
 
 
@@ -780,6 +740,10 @@ drop  view  视图名称;
 1  定义
 
 > 事务是一个操作序列，这些操作要么「都执行」，要么「都不执行」
+
+对数据进行操作才会产生事务，查询不会产生事务
+
+truncate产生事务
 
 2  开启事务
 
