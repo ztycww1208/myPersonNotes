@@ -648,8 +648,6 @@ tar     -xzvf     a.tar.gz     -C     /home                                    -
 
 ### 12.4 `chmod` 修改权限
 
-
-
 ```
 chmod :                                               change mode 
 chmod    g+w          aa                        ---给文件aa修改权限:组内人增加写的权限 
@@ -757,7 +755,7 @@ service network restart
 halt 
 init 0 
 shutdown -h now ---立刻关机 
-hutdown -h 00:00 ---12:00关
+shutdown -h 00:00 ---12:00关
 
 重启
 reboot 
@@ -775,7 +773,7 @@ kill -9 pid ---强制杀死进程
 安装
 yum -y install 服务名     ---安装程序
 启动
-service    httpd    start/restart/stop/status                --apache服务启动/重 启/停止/查看状态
+service    httpd    start/restart/stop/status                --apache服务启动/重启/停止/查看状态
 
 
 free    -m                                             --查看内存 
